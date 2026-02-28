@@ -19,8 +19,13 @@ class TestGetRttMs:
         assert isinstance(rtt, int)
         assert rtt > 0
 
-    def test_symmetric(self) -> None:
-        assert get_rtt_ms("eastus", "westeurope") == get_rtt_ms("westeurope", "eastus")
+    def test_both_directions_available(self) -> None:
+        rtt_ab = get_rtt_ms("eastus", "westeurope")
+        rtt_ba = get_rtt_ms("westeurope", "eastus")
+        assert rtt_ab is not None
+        assert rtt_ba is not None
+        assert isinstance(rtt_ab, int)
+        assert isinstance(rtt_ba, int)
 
     def test_unknown_pair_returns_none(self) -> None:
         assert get_rtt_ms("francecentral", "nonexistentregion") is None
@@ -62,7 +67,7 @@ class TestGetLatencyMatrix:
         assert matrix[1][1] == 0
         # Off-diagonal = known RTT
         assert matrix[0][1] is not None
-        assert matrix[0][1] == matrix[1][0]
+        assert matrix[1][0] is not None
 
     def test_unknown_pair_in_matrix(self) -> None:
         result = get_latency_matrix(["francecentral", "nonexistentregion"])

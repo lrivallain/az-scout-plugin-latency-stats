@@ -1,32 +1,41 @@
 <!-- Latency stats HTML fragment loaded by the plugin JS -->
 <div class="latency-card">
-    <h6><i class="bi bi-diagram-3"></i> Inter-Region Latency Graph</h6>
     <p class="text-body-secondary small mb-3">
-        Select multiple regions to visualise pairwise round-trip latency (ms).
+        Select multiple regions to visualise pairwise round-trip latency (ms) on a world map.
         Data source:
         <a href="https://learn.microsoft.com/en-us/azure/networking/azure-network-latency"
            target="_blank" rel="noopener">Azure Network Latency</a>.
     </p>
 
-    <!-- Region multi-select -->
-    <div class="mb-3" style="max-width: 500px;">
-        <label for="latency-region-select" class="form-label form-label-sm">
-            Regions <span class="text-body-secondary">(select 2+)</span>
-        </label>
-        <select class="form-select form-select-sm" id="latency-region-select" multiple size="8">
-            <option value="" disabled>Loading regions…</option>
-        </select>
-        <div class="form-text">Hold Ctrl / ⌘ to select multiple regions.</div>
+    <!-- Top bar: collapsible selector -->
+    <div class="latency-selector-bar mb-3">
+        <button class="btn btn-outline-secondary btn-sm" id="latency-selector-toggle" type="button">
+            <i class="bi bi-geo-alt"></i> Select Regions…
+        </button>
+        <button class="btn btn-primary btn-sm ms-2" id="latency-btn" disabled>
+            <i class="bi bi-globe-americas"></i> Show Latency Map
+        </button>
+        <span id="latency-selection-badge" class="ms-2 text-body-secondary small"></span>
+
+        <!-- Collapsible region picker -->
+        <div class="latency-selector-popover" id="latency-selector-popover">
+            <input type="text" class="form-control form-control-sm latency-search-input"
+                   id="latency-region-filter" placeholder="Filter regions…" autocomplete="off">
+            <select class="form-select form-select-sm" id="latency-region-select" multiple size="12">
+                <option value="" disabled>Loading regions…</option>
+            </select>
+            <div class="form-text">Hold Ctrl / ⌘ to select multiple.</div>
+        </div>
     </div>
 
-    <!-- Action -->
-    <button class="btn btn-primary btn-sm mb-3" id="latency-btn" disabled>
-        <i class="bi bi-diagram-3"></i> Show Latency Graph
-    </button>
-
-    <!-- Graph output -->
-    <div id="latency-graph-container" class="latency-graph-container"></div>
-
-    <!-- Legend / stats -->
-    <div id="latency-legend" class="latency-legend mt-2 small text-body-secondary"></div>
+    <!-- Main content: map left, table right -->
+    <div class="latency-content-row">
+        <div class="latency-map-panel">
+            <div id="latency-map-container" class="latency-map-container"></div>
+            <div id="latency-legend" class="latency-legend mt-2 small text-body-secondary"></div>
+        </div>
+        <div class="latency-table-panel">
+            <div id="latency-table-container" class="latency-table-container"></div>
+        </div>
+    </div>
 </div>

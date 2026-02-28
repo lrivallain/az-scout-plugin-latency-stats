@@ -2,7 +2,8 @@
 
 Provides inter-region latency data based on Microsoft published statistics,
 an API endpoint to compute pairwise latency matrices, an MCP tool, and a
-D3.js graph visualisation showing regions as nodes with latency edges.
+D3.js world map visualisation showing regions positioned geographically
+with great-circle latency arcs.
 """
 
 from collections.abc import Callable
@@ -50,7 +51,7 @@ class LatencyStatsPlugin:
             TabDefinition(
                 id="latency",
                 label="Latency",
-                icon="bi bi-diagram-3",
+                icon="bi bi-globe-americas",
                 js_entry="js/latency-tab.js",
                 css_entry="css/latency.css",
             )
