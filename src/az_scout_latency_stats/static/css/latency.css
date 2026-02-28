@@ -192,19 +192,23 @@
 }
 
 /* ---- Dark mode overrides ---- */
-[data-theme="dark"] .latency-map-land path {
-    fill: var(--bs-tertiary-bg, #2b3035);
+[data-theme="dark"] .latency-map-land path,
+[data-bs-theme="dark"] .latency-map-land path {
+    fill: #2b3035;
 }
 
-[data-theme="dark"] .latency-map-borders {
+[data-theme="dark"] .latency-map-borders,
+[data-bs-theme="dark"] .latency-map-borders {
     stroke: #495057;
 }
 
-[data-theme="dark"] .latency-map-svg {
-    background: var(--bs-body-bg, #212529);
+[data-theme="dark"] .latency-map-svg,
+[data-bs-theme="dark"] .latency-map-svg {
+    background: #1a1e24;
 }
 
-[data-theme="dark"] .latency-arc {
+[data-theme="dark"] .latency-arc,
+[data-bs-theme="dark"] .latency-arc {
     stroke-opacity: 0.6;
 }
 
@@ -323,10 +327,13 @@
 
 /* Dark mode table */
 [data-theme="dark"] .latency-table thead th,
-[data-theme="dark"] .latency-table tbody th {
+[data-bs-theme="dark"] .latency-table thead th,
+[data-theme="dark"] .latency-table tbody th,
+[data-bs-theme="dark"] .latency-table tbody th {
     background: var(--bs-tertiary-bg, #2b3035);
 }
 
-[data-theme="dark"] .latency-cell-self {
+[data-theme="dark"] .latency-cell-self,
+[data-bs-theme="dark"] .latency-cell-self {
     background: var(--bs-tertiary-bg, #2b3035);
 }
