@@ -26,8 +26,7 @@ async def latency_matrix(body: LatencyMatrixRequest) -> dict[str, object]:
         **result,
         "source": "https://learn.microsoft.com/en-us/azure/networking/azure-network-latency",
         "disclaimer": (
-            "Latency values are indicative and must be validated "
-            "with in-tenant measurements."
+            "Latency values are indicative and must be validated with in-tenant measurements."
         ),
     }
 

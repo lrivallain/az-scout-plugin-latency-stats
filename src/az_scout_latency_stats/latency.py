@@ -62,9 +62,7 @@ def _load_csv() -> None:
                 try:
                     _LATENCY_PAIRS[(source, dest)] = int(cell)
                 except ValueError:
-                    logger.warning(
-                        "Invalid latency value %r for %s -> %s", cell, source, dest
-                    )
+                    logger.warning("Invalid latency value %r for %s -> %s", cell, source, dest)
 
     _DATA_LOADED = True
     logger.info("Loaded %d latency pairs from %s", len(_LATENCY_PAIRS), _CSV_PATH)

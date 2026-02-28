@@ -18,8 +18,7 @@ def region_latency(source_region: str, target_region: str) -> str:
         "rttMs": rtt,
         "source": "https://learn.microsoft.com/en-us/azure/networking/azure-network-latency",
         "disclaimer": (
-            "Latency values are indicative and must be validated "
-            "with in-tenant measurements."
+            "Latency values are indicative and must be validated with in-tenant measurements."
         ),
     }
     return json.dumps(result, indent=2)
