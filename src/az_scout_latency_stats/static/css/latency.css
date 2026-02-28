@@ -73,13 +73,13 @@
 
 /* ---- World basemap ---- */
 .latency-map-land path {
-    fill: var(--bs-tertiary-bg, #e9ecef);
+    fill: #c8d3da;
     stroke: none;
 }
 
 .latency-map-borders {
     fill: none;
-    stroke: var(--bs-border-color, #dee2e6);
+    stroke: #96a8b8;
     stroke-width: 0.5;
     stroke-linejoin: round;
 }
@@ -194,6 +194,10 @@
 /* ---- Dark mode overrides ---- */
 [data-theme="dark"] .latency-map-land path {
     fill: var(--bs-tertiary-bg, #2b3035);
+}
+
+[data-theme="dark"] .latency-map-borders {
+    stroke: #495057;
 }
 
 [data-theme="dark"] .latency-map-svg {
