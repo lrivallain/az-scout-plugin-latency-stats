@@ -2,6 +2,8 @@
 
 Inter-region latency statistics plugin for [az-scout](https://github.com/lrivallain/az-scout).
 
+<img width="2315" height="1361" alt="image" src="https://github.com/user-attachments/assets/d5639392-f713-4c96-936b-881e7c8c7ffe" />
+
 ## Features
 
 - **Latency dataset** — static latency matrix based on [Microsoft published statistics](https://learn.microsoft.com/en-us/azure/networking/azure-network-latency)
