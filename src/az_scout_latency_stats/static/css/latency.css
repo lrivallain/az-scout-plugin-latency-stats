@@ -1,0 +1,87 @@
+/* Latency Stats plugin styles — themed for light & dark mode */
+
+.latency-card {
+    border: 1px solid var(--bs-border-color);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.latency-card h6 {
+    color: var(--bs-primary);
+    margin-bottom: 0.5rem;
+}
+
+/* ---- Graph container ---- */
+.latency-graph-container {
+    max-width: 900px;
+}
+
+.latency-graph-container svg {
+    width: 100%;
+    height: auto;
+}
+
+/* ---- Nodes ---- */
+.latency-node-circle {
+    stroke-width: 2;
+}
+
+.latency-node-label {
+    font-size: 11px;
+    font-weight: 500;
+    fill: var(--bs-body-color);
+    pointer-events: none;
+}
+
+/* ---- Links / edges ---- */
+.latency-link {
+    stroke: var(--bs-secondary-color);
+    stroke-opacity: 0.35;
+    fill: none;
+    transition: stroke-opacity 0.15s, stroke-width 0.15s;
+}
+
+.latency-link.highlighted {
+    stroke-opacity: 1 !important;
+    stroke-width: 3 !important;
+}
+
+.latency-link.dimmed {
+    stroke-opacity: 0.08 !important;
+}
+
+/* ---- Edge labels ---- */
+.latency-edge-label {
+    font-size: 10px;
+    font-weight: 600;
+    fill: var(--bs-body-color);
+    pointer-events: none;
+    text-anchor: middle;
+}
+
+.latency-edge-label.dimmed {
+    opacity: 0.1;
+}
+
+.latency-edge-label.highlighted {
+    opacity: 1;
+    font-size: 12px;
+}
+
+/* ---- Edge label background ---- */
+.latency-edge-bg {
+    fill: var(--bs-body-bg);
+    rx: 3;
+    ry: 3;
+}
+
+/* ---- Legend ---- */
+.latency-legend {
+    font-size: 0.8rem;
+}
+
+/* ---- Dark mode overrides ---- */
+[data-theme="dark"] .latency-link {
+    stroke: var(--bs-secondary-color);
+}
