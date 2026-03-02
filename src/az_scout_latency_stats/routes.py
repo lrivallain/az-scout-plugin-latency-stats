@@ -5,8 +5,6 @@ from typing import Literal
 from fastapi import APIRouter
 from pydantic import BaseModel
 
-from az_scout_latency_stats._log import logger
-
 router = APIRouter()
 
 _AZUREDOCS_SOURCE = "https://learn.microsoft.com/en-us/azure/networking/azure-network-latency"

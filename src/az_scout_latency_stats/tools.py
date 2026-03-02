@@ -2,7 +2,6 @@
 
 import json
 
-from az_scout_latency_stats._log import logger
 
 def region_latency(source_region: str, target_region: str, mode: str = "azuredocs") -> str:
     """Return indicative RTT latency between two Azure regions.
