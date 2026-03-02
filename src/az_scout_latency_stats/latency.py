@@ -13,11 +13,10 @@ Cache TTL: 24 hours (dataset is static, refreshed monthly by Microsoft).
 """
 
 import csv
-import logging
 import time
 from pathlib import Path
 
-logger = logging.getLogger(__name__)
+from az_scout_latency_stats._log import logger
 
 # ---------------------------------------------------------------------------
 # Latency pairs loaded from CSV
@@ -65,7 +64,7 @@ def _load_csv() -> None:
                     logger.warning("Invalid latency value %r for %s -> %s", cell, source, dest)
 
     _DATA_LOADED = True
-    logger.info("Loaded %d latency pairs from %s", len(_LATENCY_PAIRS), _CSV_PATH)
+    logger.debug("Loaded %d latency pairs from %s", len(_LATENCY_PAIRS), _CSV_PATH)
 
 
 # ---------------------------------------------------------------------------

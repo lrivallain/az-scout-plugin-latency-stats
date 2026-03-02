@@ -29,6 +29,11 @@ class LatencyStatsPlugin:
     name = "latency-stats"
     version = __version__
 
+    def __init__(self) -> None:
+        from az_scout_latency_stats.cloud63 import prewarm_cloud63
+
+        prewarm_cloud63()
+
     def get_router(self) -> APIRouter | None:
         """Return API routes for latency data."""
         from az_scout_latency_stats.routes import router

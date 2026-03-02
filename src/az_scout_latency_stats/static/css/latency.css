@@ -9,6 +9,16 @@
     position: relative;
 }
 
+.latency-bar-divider {
+    display: inline-block;
+    width: 1px;
+    height: 1.5em;
+    margin-left: 0.75rem;
+    margin-right: 0.75rem;
+    background-color: var(--bs-border-color, #dee2e6);
+    opacity: 0.6;
+}
+
 .latency-selector-popover {
     display: none;
     position: absolute;

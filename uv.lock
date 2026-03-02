@@ -67,6 +67,7 @@ source = { editable = "." }
 dependencies = [
     { name = "az-scout" },
     { name = "fastapi" },
+    { name = "httpx" },
 ]
 
 [package.dev-dependencies]
@@ -82,6 +83,7 @@ dev = [
 requires-dist = [
     { name = "az-scout" },
     { name = "fastapi" },
+    { name = "httpx", specifier = ">=0.28" },
 ]
 
 [package.metadata.requires-dev]

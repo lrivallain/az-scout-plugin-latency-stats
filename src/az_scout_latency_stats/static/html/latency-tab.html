@@ -1,6 +1,6 @@
 <!-- Latency stats HTML fragment loaded by the plugin JS -->
 <div class="latency-card">
-    <p class="text-body-secondary small mb-3">
+    <p class="text-body-secondary small mb-3" id="latency-source-text">
         Select multiple regions to visualise pairwise round-trip latency (ms) on a world map.
         Data source:
         <a href="https://learn.microsoft.com/en-us/azure/networking/azure-network-latency"
@@ -9,15 +9,26 @@
         <em>Note: not all regions and pairing combinations have documented latency data available.</em>
     </p>
 
-    <!-- Top bar: collapsible selector -->
+    <!-- Top bar: region selector + mode toggle -->
     <div class="latency-selector-bar mb-3">
         <button class="btn btn-outline-secondary btn-sm" id="latency-selector-toggle" type="button">
             <i class="bi bi-geo-alt"></i> Select Regions…
         </button>
-        <button class="btn btn-primary btn-sm ms-2" id="latency-btn" disabled>
-            <i class="bi bi-globe-americas"></i> Show Latency Map
-        </button>
         <span id="latency-selection-badge" class="ms-2 text-body-secondary small"></span>
+
+        <span class="latency-bar-divider"></span>
+
+        <!-- Mode toggle pill -->
+        <span class="text-body-secondary small me-2">Choose data source:</span>
+        <div class="btn-group btn-group-sm" role="group" aria-label="Choose data source">
+            <input type="radio" class="btn-check" name="latency-mode" id="latency-mode-azuredocs"
+                   value="azuredocs" autocomplete="off" checked>
+            <label class="btn btn-outline-primary" for="latency-mode-azuredocs">Azure Docs</label>
+
+            <input type="radio" class="btn-check" name="latency-mode" id="latency-mode-cloud63"
+                   value="cloud63" autocomplete="off">
+            <label class="btn btn-outline-primary" for="latency-mode-cloud63">Cloud63</label>
+        </div>
 
         <!-- Collapsible region picker -->
         <div class="latency-selector-popover" id="latency-selector-popover">

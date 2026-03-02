@@ -57,13 +57,46 @@
     function initLatencyPlugin() {
         const regionSelect  = document.getElementById("latency-region-select");
         const filterInput   = document.getElementById("latency-region-filter");
-        const btn           = document.getElementById("latency-btn");
         const mapEl         = document.getElementById("latency-map-container");
         const legendEl      = document.getElementById("latency-legend");
         const tableEl       = document.getElementById("latency-table-container");
         const toggleBtn     = document.getElementById("latency-selector-toggle");
         const popover       = document.getElementById("latency-selector-popover");
         const selBadge      = document.getElementById("latency-selection-badge");
+        const sourceText    = document.getElementById("latency-source-text");
+
+        // Mode toggle (azuredocs / cloud63)
+        const modeRadios = document.querySelectorAll('input[name="latency-mode"]');
+        function getMode() {
+            const checked = document.querySelector('input[name="latency-mode"]:checked');
+            return checked ? checked.value : "azuredocs";
+        }
+
+        function updateSourceText(mode) {
+            if (mode === "cloud63") {
+                sourceText.innerHTML =
+                    'Select multiple regions to visualise pairwise round-trip latency (ms) on a world map. ' +
+                    'Data source: <a href="https://latency.azure.cloud63.fr/" target="_blank" rel="noopener">Cloud63 — Azure Latency Test</a> ' +
+                    '(crowd-sourced measurements).' +
+                    '<br><em>Note: not all regions and pairing combinations have documented latency data available. ' +
+                    'Cloud63 data may take a moment to load on first use.</em>';
+            } else {
+                sourceText.innerHTML =
+                    'Select multiple regions to visualise pairwise round-trip latency (ms) on a world map. ' +
+                    'Data source: <a href="https://learn.microsoft.com/en-us/azure/networking/azure-network-latency" ' +
+                    'target="_blank" rel="noopener">Azure Docs — Network Latency</a>.' +
+                    '<br><em>Note: not all regions and pairing combinations have documented latency data available.</em>';
+            }
+        }
+
+        modeRadios.forEach(r => r.addEventListener("change", async () => {
+            const mode = getMode();
+            updateSourceText(mode);
+            if (mode === "cloud63") {
+                await mergeCloud63Regions();
+            }
+            fetchAndRender();
+        }));
 
         // Start with popover open (no regions selected yet)
         popover.classList.add("open");
@@ -99,6 +132,41 @@
 
         // Sorted region list cache for filtering
         let allRegionEntries = [];
+        let cloud63RegionsMerged = false;
+
+        // Convert a region slug like "southcentralus" to "South Central US"
+        function slugToDisplayName(slug) {
+            return slug
+                .replace(/([a-z])([A-Z])/g, "$1 $2")
+                .replace(/([a-z])(\d)/g, "$1 $2")
+                .replace(/\b\w/g, c => c.toUpperCase());
+        }
+
+        // Fetch Cloud63 regions and merge any new ones into regionCoords
+        async function mergeCloud63Regions() {
+            if (cloud63RegionsMerged) return;
+            try {
+                const resp = await fetch(`/plugins/${PLUGIN_NAME}/cloud63-regions`);
+                if (!resp.ok) return;
+                const data = await resp.json();
+                const cloud63List = data.regions || [];
+                let added = 0;
+                for (const name of cloud63List) {
+                    if (!regionCoords[name]) {
+                        regionCoords[name] = { lat: 0, lon: 0, displayName: slugToDisplayName(name) };
+                        added++;
+                    }
+                }
+                if (added > 0) {
+                    // Invalidate sorted cache so populateRegions rebuilds it
+                    allRegionEntries = [];
+                    populateRegions(filterInput.value);
+                }
+                cloud63RegionsMerged = true;
+            } catch (err) {
+                console.warn("Failed to fetch Cloud63 regions:", err);
+            }
+        }
 
         // Populate region select from the plugin's own coordinates data
         function populateRegions(filter) {
@@ -131,28 +199,32 @@
             populateRegions(filterInput.value);
         });
 
-        // Enable button when >= 2 regions selected, update badge
+        // Update badge and auto-render when >= 2 regions selected
         regionSelect.addEventListener("change", () => {
             const selected = Array.from(regionSelect.selectedOptions).map(o => o.value);
-            btn.disabled = selected.length < 2;
             selBadge.textContent = selected.length
                 ? `${selected.length} region${selected.length > 1 ? "s" : ""} selected`
                 : "";
+            fetchAndRender();
         });
 
         // -----------------------------------------------------------------
-        // Fetch matrix & render
+        // Fetch matrix & render (triggered by mode or region change)
         // -----------------------------------------------------------------
-        btn.addEventListener("click", async () => {
+        async function fetchAndRender() {
             const selected = Array.from(regionSelect.selectedOptions).map(o => o.value);
-            if (selected.length < 2) return;
+            if (selected.length < 2) {
+                renderEmptyMap(mapEl);
+                legendEl.innerHTML = "";
+                tableEl.innerHTML = "";
+                return;
+            }
 
             mapEl.innerHTML = '<p class="text-body-secondary text-center py-3">Loading…</p>';
             legendEl.innerHTML = "";
             tableEl.innerHTML = "";
 
             try {
-                // Ensure topojson lib and map data are loaded
                 await ensureTopojson();
                 if (!regionCoords || !worldTopo) {
                     const [coords, topo] = await Promise.all([
@@ -163,13 +235,14 @@
                     worldTopo = topo;
                 }
 
-                const data = await apiPost(`/plugins/${PLUGIN_NAME}/matrix`, { regions: selected });
+                const mode = getMode();
+                const data = await apiPost(`/plugins/${PLUGIN_NAME}/matrix`, { regions: selected, mode });
                 renderLatencyMap(data, mapEl, legendEl);
                 renderLatencyTable(data, tableEl);
             } catch (e) {
                 mapEl.innerHTML = `<div class="alert alert-danger">Error: ${e.message}</div>`;
             }
-        });
+        }
     }
 
     // -----------------------------------------------------------------------
