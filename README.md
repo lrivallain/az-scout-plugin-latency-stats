@@ -2,7 +2,7 @@
 
 Inter-region latency statistics plugin for [az-scout](https://github.com/lrivallain/az-scout).
 
-<img width="2315" height="1361" alt="image" src="https://github.com/user-attachments/assets/d5639392-f713-4c96-936b-881e7c8c7ffe" />
+<img width="1088" height="1361" alt="Screnshot of latency plugin" src="https://github.com/user-attachments/assets/53b51880-c2c4-4381-89eb-e5adda78de1a" />
 
 ## Features
 
