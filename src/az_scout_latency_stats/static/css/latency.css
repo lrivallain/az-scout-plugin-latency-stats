@@ -333,6 +333,62 @@
     font-size: 0.8rem;
 }
 
+/* ---- Methodology footer ---- */
+.latency-methodology-note {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    padding: 0.7rem 0.8rem;
+    border: 1px solid var(--bs-border-color, #dee2e6);
+    border-radius: 0.5rem;
+    background: var(--bs-tertiary-bg, #f8f9fa);
+}
+
+.latency-methodology-head {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 600;
+}
+
+.latency-methodology-head i {
+    color: var(--bs-info, #0dcaf0);
+}
+
+.latency-methodology-tags {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+}
+
+.latency-method-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.15rem 0.45rem;
+    border-radius: 999px;
+    border: 1px solid var(--bs-border-color, #dee2e6);
+    background: var(--bs-tertiary-bg, #f8f9fa);
+    color: var(--bs-secondary-color, #6c757d);
+    font-size: 0.72rem;
+    line-height: 1.25;
+    white-space: nowrap;
+}
+
+.latency-methodology-list {
+    margin: 0;
+    padding-left: 1rem;
+    line-height: 1.35;
+}
+
+.latency-methodology-list li + li {
+    margin-top: 0.25rem;
+}
+
+.latency-methodology-list a {
+    color: var(--bs-link-color);
+}
+
 /* ---- Copy-to-clipboard button in table cells ---- */
 .latency-table td {
     position: relative;

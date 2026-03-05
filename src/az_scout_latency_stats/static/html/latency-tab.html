@@ -56,6 +56,34 @@
         </div>
         <div class="latency-table-panel">
             <div id="latency-table-container" class="latency-table-container"></div>
+
+            <div class="latency-methodology-note mt-3" id="latency-methodology-note" role="note" aria-label="Latency methodology">
+                <div class="latency-methodology-head text-body-secondary small">
+                    <i class="bi bi-info-circle-fill" aria-hidden="true"></i>
+                    <span>Methodology</span>
+                </div>
+
+                <div class="latency-methodology-tags">
+                    <span class="latency-method-pill">P50 median RTT</span>
+                    <span class="latency-method-pill">Cloud63 RTT = A→B + B→A</span>
+                </div>
+
+                <ul class="latency-methodology-list text-body-secondary small mb-0">
+                    <li>
+                        <strong>Azure Docs:</strong> values are sourced from
+                        <a href="https://learn.microsoft.com/en-us/azure/networking/azure-network-latency" target="_blank" rel="noopener">
+                            Azure Network Latency
+                        </a>
+                        where Microsoft measures inter-region round-trip latency using internal backbone probes sampled every minute,
+                        then publishes monthly P50 (median) RTT values over a rolling 30-day window. Microsoft notes that updates are
+                        periodic (typically every 6 to 9 months) and not all public regions are listed until data is available.
+                    </li>
+                    <li>
+                        <strong>Cloud63:</strong> measurements are one-way, so we compute P50 per direction, then derive RTT by summing
+                        P50(A→B) + P50(B→A). If one direction is missing, latency is shown as unknown.
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>
