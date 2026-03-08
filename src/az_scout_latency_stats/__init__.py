@@ -30,12 +30,16 @@ class LatencyStatsPlugin:
     version = __version__
 
     def __init__(self) -> None:
-        from az_scout_latency_stats.cloud63 import prewarm_cloud63
-
-        prewarm_cloud63()
+        self._prewarmed = False
 
     def get_router(self) -> APIRouter | None:
         """Return API routes for latency data."""
+        if not self._prewarmed:
+            from az_scout_latency_stats.cloud63 import prewarm_cloud63
+
+            prewarm_cloud63()
+            self._prewarmed = True
+
         from az_scout_latency_stats.routes import router
 
         return router
@@ -54,13 +58,22 @@ class LatencyStatsPlugin:
         """Return UI tab definitions."""
         return [
             TabDefinition(
-                id="latency",
+                id="latency-stats",
                 label="Latency",
                 icon="bi bi-globe-americas",
                 js_entry="js/latency-tab.js",
                 css_entry="css/latency.css",
             )
         ]
+
+    def get_system_prompt_addendum(self) -> str | None:
+        """Return extra guidance for the default discussion chat mode."""
+        return (
+            "For inter-region latency questions, use the region_latency tool. "
+            "It supports two data sources: 'azuredocs' (Microsoft published stats) "
+            "and 'cloud63' (crowd-sourced measurements from the Azure Latency Test project). "
+            "Default to 'azuredocs' unless the user asks for cloud63 data."
+        )
 
     def get_chat_modes(self) -> list[ChatMode] | None:
         """Return chat mode definitions, or None to skip."""

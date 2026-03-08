@@ -3,7 +3,7 @@
 // coloured by pairwise RTT (ms).
 (function () {
     const PLUGIN_NAME = "latency-stats";
-    const TAB_ID = "latency";
+    const TAB_ID = "latency-stats";
     const container = document.getElementById("plugin-tab-" + TAB_ID);
     if (!container) return;
 

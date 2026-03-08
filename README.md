@@ -10,7 +10,7 @@ Inter-region latency statistics plugin for [az-scout](https://github.com/lrivall
 - **API endpoints** — `POST /plugins/latency-stats/matrix` for pairwise latency matrices, `GET /plugins/latency-stats/pairs` to list all known pairs
 - **MCP tool** — `region_latency(source_region, target_region)` returns indicative RTT between two Azure regions
 - **UI tab** — interactive D3.js force-directed graph where regions are nodes and edges show latency in ms
-- **URL hash routing** — `#latency` selects the plugin tab
+- **URL hash routing** — `#latency-stats` selects the plugin tab
 
 ## Setup
 
@@ -57,7 +57,7 @@ az-scout-plugin-latency-stats/
 
 ## How it works
 
-1. The plugin JS loads the HTML fragment into `#plugin-tab-latency`.
+1. The plugin JS loads the HTML fragment into `#plugin-tab-latency-stats`.
 2. Regions are populated from the main app's `regions` global.
 3. The user selects 2+ regions and clicks **Show Latency Graph**.
 4. The plugin calls `POST /plugins/latency-stats/matrix` with the selected regions.
