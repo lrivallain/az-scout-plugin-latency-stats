@@ -45,22 +45,22 @@ az-scout-plugin-latency-stats/
 └── src/
     └── az_scout_latency_stats/
         ├── __init__.py          # Plugin class + module-level `plugin` instance
-    ├── cloud63.py           # Cloud63 data fetch/cache + inter-region matrix API
-    ├── inter_zone.py        # Inter-zone benchmark fetch/cache + AZ matrix API
+        ├── cloud63.py           # Cloud63 data fetch/cache + inter-region matrix API
+        ├── inter_zone.py        # Inter-zone benchmark fetch/cache + AZ matrix API
         ├── latency.py           # Static latency dataset + public API
-    ├── metadata.py          # Shared source/disclaimer/methodology constants
+        ├── metadata.py          # Shared source/disclaimer/methodology constants
         ├── routes.py            # FastAPI APIRouter (optional)
         ├── tools.py             # MCP tool functions (optional)
         └── static/
-            ├── html/
-            │   └── latency-tab.html # HTML fragment (fetched by JS at runtime)
             ├── css/
             │   └── latency.css      # Plugin styles (auto-loaded via css_entry)
+            ├── data/
+            │   └── region-coordinates.json
+            ├── html/
+            │   └── latency-tab.html # HTML fragment (fetched by JS at runtime)
             └── js/
-                ├── latency-tab.js         # Main tab bootstrap + inter-region UI logic
-                └── latency-tab-interzone.js   # Inter-zone graph/table rendering + sync logic
-      ├── data/
-      │   └── region-coordinates.json
+                ├── latency-tab.js           # Main tab bootstrap + inter-region UI logic
+                └── latency-tab-interzone.js # Inter-zone graph/table rendering + sync
 ```
 
 ## How it works
@@ -68,29 +68,29 @@ az-scout-plugin-latency-stats/
 1. The plugin loads the HTML fragment into `#plugin-tab-latency-stats`.
 2. The user selects a scope:
    - **Inter-region**: select regions and choose source mode (`azuredocs` or `cloud63`).
-   - **Intra-region (AZ)**: uses the main app region selector (`#region-select`).
-3. Inter-region calls `POST /plugins/latency-stats/matrix` and renders world map + matrix table.
-4. Intra-region calls `POST /plugins/latency-stats/inter-zone/matrix` and renders AZ graph + pair table.
+   - **Inter-zone (AZ)**: uses the main app region selector (`#region-select`).
+3. Inter-region calls `POST /plugins/latency-stats/inter-region/matrix` and renders world map + matrix table.
+4. Inter-zone calls `POST /plugins/latency-stats/inter-zone/matrix` and renders AZ graph + pair table.
 5. Hover interactions are synchronized between graph links and table values in both directions.
 
 ### API
 
 ```bash
 # Pairwise matrix
-curl -X POST http://localhost:8080/plugins/latency-stats/matrix \
+curl -X POST http://localhost:8080/plugins/latency-stats/inter-region/matrix \
   -H "Content-Type: application/json" \
   -d '{"regions": ["francecentral", "westeurope", "eastus"], "mode": "azuredocs"}'
 
 # All known pairs
-curl http://localhost:8080/plugins/latency-stats/pairs
+curl http://localhost:8080/plugins/latency-stats/inter-region/pairs
 
 # Cloud63 available regions
-curl http://localhost:8080/plugins/latency-stats/cloud63-regions
+curl http://localhost:8080/plugins/latency-stats/inter-region/cloud63-regions
 
 # Inter-zone available regions
 curl http://localhost:8080/plugins/latency-stats/inter-zone/regions
 
-# Intra-region AZ matrix
+# Inter-zone AZ matrix
 curl -X POST http://localhost:8080/plugins/latency-stats/inter-zone/matrix \
   -H "Content-Type: application/json" \
   -d '{"region": "westeurope"}'
@@ -139,7 +139,7 @@ code that follows the project patterns.
 - **Cloud63** (inter-region optional mode): [Azure Latency Test](https://latency.azure.cloud63.fr/)
 - **Cloud63 benchmark API** (inter-zone AZ): `https://fa-azure-network-benchmark.azurewebsites.net/api/data`
 
-Intra-region outputs are exposed in **microseconds** (`latencyUsP50`). Always validate with in-tenant measurements.
+Inter-zone outputs are exposed in **microseconds** (`latencyUsP50`). Always validate with in-tenant measurements.
 
 ## License
 

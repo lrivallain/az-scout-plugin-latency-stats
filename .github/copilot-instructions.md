@@ -2,7 +2,7 @@
 
 ## Project overview
 
-This is an **az-scout plugin** — a Python package that extends [az-scout](https://github.com/lrivallain/az-scout) with inter-region latency statistics based on Microsoft published data. Plugins are auto-discovered via the `az_scout.plugins` entry-point group.
+This is an **az-scout plugin** — a Python package that extends [az-scout](https://github.com/lrivallain/az-scout) with inter-region and inter-zone (AZ) latency statistics. Plugins are auto-discovered via the `az_scout.plugins` entry-point group.
 
 ## Tech stack
 
@@ -16,16 +16,22 @@ This is an **az-scout plugin** — a Python package that extends [az-scout](http
 ```
 src/az_scout_latency_stats/
 ├── __init__.py          # Plugin class + module-level `plugin` instance
+├── cloud63.py           # Cloud63 data fetch/cache + inter-region matrix API
+├── inter_zone.py        # Inter-zone benchmark fetch/cache + AZ matrix API
 ├── latency.py           # Static latency dataset + public API
+├── metadata.py          # Shared source/disclaimer/methodology constants
 ├── routes.py            # FastAPI APIRouter (mounted at /plugins/latency-stats/)
 ├── tools.py             # MCP tool functions (exposed on the az-scout MCP server)
 └── static/
     ├── css/
     │   └── latency.css      # Plugin styles (auto-loaded via css_entry)
+    ├── data/
+    │   └── region-coordinates.json
     ├── html/
     │   └── latency-tab.html # HTML fragment (fetched by JS at runtime)
     └── js/
-        └── latency-tab.js   # Tab UI logic (auto-loaded via js_entry)
+        ├── latency-tab.js           # Main tab bootstrap + inter-region UI logic
+        └── latency-tab-interzone.js # Inter-zone graph/table rendering + sync
 ```
 
 ## Plugin API
@@ -55,7 +61,7 @@ latency_stats = "az_scout_latency_stats:plugin"
 
 ## Frontend patterns
 
-- The plugin tab container is `#plugin-tab-latency`. Load HTML fragments into it.
+- The plugin tab container is `#plugin-tab-latency-stats`. Load HTML fragments into it.
 - Watch `#tenant-select` and `#region-select` via `MutationObserver` / change events to react to user context changes.
 - Plugin static assets are at `/plugins/latency-stats/static/…`.
 
