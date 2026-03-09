@@ -202,7 +202,7 @@ class TestIntraZoneQueries:
         result = get_intra_zone_matrix("westeurope")
 
         assert result["region"] == "westeurope"
-        assert result["zones"] == ["az1", "az2", "az3"]
+        assert result["zones"] == ["westeurope-az1", "westeurope-az2", "westeurope-az3"]
         matrix = result["matrix"]
         assert matrix[0][0] == 0.0
         assert matrix[0][1] == 1200.0

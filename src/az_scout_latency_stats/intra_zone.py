@@ -431,6 +431,7 @@ def get_intra_zone_matrix(region: str) -> dict[str, Any]:
         zones_set.add(zone_a)
         zones_set.add(zone_b)
     zones = sorted(zones_set)
+    full_zones = [f"{normalized_region}-{z}" for z in zones]
 
     matrix: list[list[float | None]] = []
     for zone_row in zones:
@@ -445,8 +446,8 @@ def get_intra_zone_matrix(region: str) -> dict[str, Any]:
 
     pairs = [
         {
-            "zoneA": zone_a,
-            "zoneB": zone_b,
+            "zoneA": f"{normalized_region}-{zone_a}",
+            "zoneB": f"{normalized_region}-{zone_b}",
             "latencyUsP50": latency,
         }
         for (zone_a, zone_b), latency in sorted(region_pairs.items())
@@ -454,7 +455,7 @@ def get_intra_zone_matrix(region: str) -> dict[str, Any]:
 
     return {
         "region": normalized_region,
-        "zones": zones,
+        "zones": full_zones,
         "matrix": matrix,
         "pairs": pairs,
     }

@@ -248,7 +248,7 @@ class TestIntraZoneRoutes:
         assert resp.status_code == 200
         data = resp.json()
         assert data["region"] == "westeurope"
-        assert data["zones"] == ["az1", "az2", "az3"]
+        assert data["zones"] == ["westeurope-az1", "westeurope-az2", "westeurope-az3"]
         assert data["methodology"] == (
             "P50 RTT (sum of directional medians, microseconds) between physical AZs "
             "is used when multiple samples exist."

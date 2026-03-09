@@ -101,8 +101,8 @@ def intra_region_latency(region: str, source_zone: str = "", target_zone: str = 
         return json.dumps(
             {
                 "region": region,
-                "sourcePhysicalZone": source_zone,
-                "targetPhysicalZone": target_zone,
+                "sourcePhysicalZone": f"{region}-{source_zone}",
+                "targetPhysicalZone": f"{region}-{target_zone}",
                 "latencyUsP50": latency_us,
                 "zoneType": "physical",
                 "source": INTRA_ZONE_SOURCE,

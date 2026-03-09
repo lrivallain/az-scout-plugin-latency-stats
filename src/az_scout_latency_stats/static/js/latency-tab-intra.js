@@ -66,7 +66,7 @@
                 .attr("y", pointY + 6)
                 .attr("text-anchor", "middle")
                 .attr("class", "latency-zone-map-row-label")
-                .text(`${data.region}-${zone}`);
+                .text(zone);
         });
 
         function pointOnRectEdge(centerX, centerY, targetX, targetY, boxWidth, boxHeight) {
@@ -292,8 +292,8 @@
             const latencyUs = pair.latencyUsP50 !== undefined && pair.latencyUsP50 !== null
                 ? pair.latencyUsP50
                 : null;
-            const zoneAName = region ? `${region}-${pair.zoneA}` : pair.zoneA;
-            const zoneBName = region ? `${region}-${pair.zoneB}` : pair.zoneB;
+            const zoneAName = pair.zoneA;
+            const zoneBName = pair.zoneB;
             const [zoneA, zoneB] = [pair.zoneA, pair.zoneB].sort();
             const row = document.createElement("tr");
             row.innerHTML = `
