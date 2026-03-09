@@ -13,7 +13,9 @@ CLOUD63_DISCLAIMER = (
 )
 
 INTRA_ZONE_DISCLAIMER = (
-    "Intra-zone latency values are indicative benchmark data. Validate with in-tenant measurements."
+    "Intra-zone latency values are indicative benchmark data based on physical AZ identifiers. "
+    "Do NOT remap through logical-to-physical zone mappings. "
+    "Validate with in-tenant measurements."
 )
 
-INTRA_ZONE_METHODOLOGY = "P50 RTT (sum of directional medians, microseconds)"
+INTRA_ZONE_METHODOLOGY = "P50 RTT (sum of directional medians, microseconds) between physical AZs"

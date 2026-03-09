@@ -76,7 +76,10 @@ class LatencyStatsPlugin:
             "and 'cloud63' (crowd-sourced measurements from the Azure Latency Test project). "
             "Default to 'azuredocs' unless the user asks for cloud63 data. "
             "For intra-region (Availability Zone) latency questions, use the "
-            "intra_region_latency tool and report P50 median latency values."
+            "intra_region_latency tool. IMPORTANT: this tool returns latency "
+            "between PHYSICAL AZs (az1, az2, az3), which are the same across "
+            "all subscriptions. Do NOT remap them through logical-to-physical "
+            "zone mappings. Present zone names exactly as returned by the tool."
         )
 
     def get_chat_modes(self) -> list[ChatMode] | None:

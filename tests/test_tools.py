@@ -85,8 +85,12 @@ class TestIntraRegionLatency:
             mod._intra_zone_loaded = True
 
         result = json.loads(intra_region_latency("westeurope", "az1", "az2"))
+        assert result["sourcePhysicalZone"] == "az1"
+        assert result["targetPhysicalZone"] == "az2"
         assert result["latencyUsP50"] == 1200.0
-        assert result["methodology"] == "P50 RTT (sum of directional medians, microseconds)"
+        assert result["methodology"] == (
+            "P50 RTT (sum of directional medians, microseconds) between physical AZs"
+        )
 
         with mod._cache_lock:
             mod._intra_zone_pairs = {}

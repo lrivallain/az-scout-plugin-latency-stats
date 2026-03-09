@@ -66,12 +66,17 @@ def region_latency(source_region: str, target_region: str, mode: str = "azuredoc
 
 
 def intra_region_latency(region: str, source_zone: str = "", target_zone: str = "") -> str:
-    """Return intra-region Availability Zone latency data (P50 median).
+    """Return intra-region PHYSICAL Availability Zone RTT latency (P50 median).
+
+    IMPORTANT: This tool uses PHYSICAL AZ identifiers (az1, az2, az3), NOT
+    logical AZs.  Physical AZs are the same for all subscriptions in a region.
+    Do NOT apply any logical-to-physical zone mapping to the results.
+    Present the zone names exactly as returned (e.g. 'az1', 'az2').
 
     Args:
         region: Azure region name (e.g. 'westeurope').
-        source_zone: Optional source zone (e.g. 'az1').
-        target_zone: Optional target zone (e.g. 'az2').
+        source_zone: Physical AZ identifier (e.g. 'az1'). NOT a logical zone.
+        target_zone: Physical AZ identifier (e.g. 'az2'). NOT a logical zone.
     """
     from az_scout_latency_stats.intra_zone import (
         get_intra_zone_latency_us,
@@ -96,9 +101,10 @@ def intra_region_latency(region: str, source_zone: str = "", target_zone: str = 
         return json.dumps(
             {
                 "region": region,
-                "sourceZone": source_zone,
-                "targetZone": target_zone,
+                "sourcePhysicalZone": source_zone,
+                "targetPhysicalZone": target_zone,
                 "latencyUsP50": latency_us,
+                "zoneType": "physical",
                 "source": INTRA_ZONE_SOURCE,
                 "methodology": INTRA_ZONE_METHODOLOGY,
                 "disclaimer": INTRA_ZONE_DISCLAIMER,

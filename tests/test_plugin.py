@@ -46,6 +46,7 @@ class TestLatencyStatsPlugin:
         assert addendum is not None
         assert "region_latency" in addendum
         assert "intra_region_latency" in addendum
+        assert "physical" in addendum.lower()
         assert "azuredocs" in addendum
         assert "cloud63" in addendum
 
