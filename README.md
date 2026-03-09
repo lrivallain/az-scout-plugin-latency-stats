@@ -52,15 +52,15 @@ az-scout-plugin-latency-stats/
         ├── routes.py            # FastAPI APIRouter (optional)
         ├── tools.py             # MCP tool functions (optional)
         └── static/
-            ├── css/
-            │   └── latency.css      # Plugin styles (auto-loaded via css_entry)
-      ├── data/
-      │   └── region-coordinates.json
             ├── html/
             │   └── latency-tab.html # HTML fragment (fetched by JS at runtime)
+            ├── css/
+            │   └── latency.css      # Plugin styles (auto-loaded via css_entry)
             └── js/
-        ├── latency-tab.js         # Main tab bootstrap + inter-region UI logic
-        └── latency-tab-interzone.js   # Inter-zone graph/table rendering + sync logic
+                ├── latency-tab.js         # Main tab bootstrap + inter-region UI logic
+                └── latency-tab-interzone.js   # Inter-zone graph/table rendering + sync logic
+      ├── data/
+      │   └── region-coordinates.json
 ```
 
 ## How it works

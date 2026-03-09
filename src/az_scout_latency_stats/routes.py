@@ -3,7 +3,7 @@
 from typing import Literal
 
 from fastapi import APIRouter
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from az_scout_latency_stats.metadata import (
     AZUREDOCS_DISCLAIMER,
@@ -16,6 +16,11 @@ from az_scout_latency_stats.metadata import (
 )
 
 router = APIRouter()
+
+
+# ---------------------------------------------------------------------------
+# Request models
+# ---------------------------------------------------------------------------
 
 
 class LatencyMatrixRequest(BaseModel):
@@ -31,7 +36,72 @@ class InterZoneMatrixRequest(BaseModel):
     region: str
 
 
-@router.post("/inter-region/matrix")
+# ---------------------------------------------------------------------------
+# Response models
+# ---------------------------------------------------------------------------
+
+
+class LatencyMatrixResponse(BaseModel):
+    """Pairwise RTT latency matrix between selected regions."""
+
+    regions: list[str] = Field(description="Normalised region names")
+    matrix: list[list[int | None]] = Field(
+        description="2D matrix — matrix[i][j] is RTT ms between regions[i] and regions[j]"
+    )
+    mode: Literal["azuredocs", "cloud63"]
+    source: str
+    disclaimer: str
+
+
+class LatencyPairItem(BaseModel):
+    """A single known latency pair."""
+
+    regionA: str
+    regionB: str
+    rttMs: int
+
+
+class LatencyPairsResponse(BaseModel):
+    """All known inter-region latency pairs."""
+
+    pairs: list[LatencyPairItem]
+    source: str
+
+
+class RegionListResponse(BaseModel):
+    """List of available region names."""
+
+    regions: list[str]
+
+
+class InterZonePairItem(BaseModel):
+    """A single inter-zone AZ latency pair."""
+
+    zoneA: str = Field(description="Physical AZ identifier (e.g. westeurope-az1)")
+    zoneB: str = Field(description="Physical AZ identifier (e.g. westeurope-az2)")
+    latencyUsP50: float = Field(description="P50 RTT latency in microseconds")
+
+
+class InterZoneMatrixResponse(BaseModel):
+    """Inter-zone AZ latency matrix for a region."""
+
+    region: str
+    zones: list[str] = Field(description="Physical AZ identifiers (e.g. westeurope-az1)")
+    matrix: list[list[float | None]] = Field(
+        description="2D matrix — matrix[i][j] is P50 RTT µs between zones[i] and zones[j]"
+    )
+    pairs: list[InterZonePairItem]
+    source: str
+    disclaimer: str
+    methodology: str
+
+
+# ---------------------------------------------------------------------------
+# Endpoints
+# ---------------------------------------------------------------------------
+
+
+@router.post("/inter-region/matrix", response_model=LatencyMatrixResponse)
 async def latency_matrix(body: LatencyMatrixRequest) -> dict[str, object]:
     """Return a pairwise RTT latency matrix for the given regions.
 
@@ -64,7 +134,7 @@ async def latency_matrix(body: LatencyMatrixRequest) -> dict[str, object]:
     }
 
 
-@router.get("/inter-region/pairs")
+@router.get("/inter-region/pairs", response_model=LatencyPairsResponse)
 async def latency_pairs() -> dict[str, object]:
     """Return all known latency pairs.
 
@@ -78,7 +148,7 @@ async def latency_pairs() -> dict[str, object]:
     }
 
 
-@router.get("/inter-region/cloud63-regions")
+@router.get("/inter-region/cloud63-regions", response_model=RegionListResponse)
 async def cloud63_regions() -> dict[str, object]:
     """Return the list of regions available in the Cloud63 data.
 
@@ -94,7 +164,7 @@ async def cloud63_regions() -> dict[str, object]:
     return {"regions": get_cloud63_regions()}
 
 
-@router.get("/inter-zone/regions")
+@router.get("/inter-zone/regions", response_model=RegionListResponse)
 async def inter_zone_regions() -> dict[str, object]:
     """Return the list of regions available for inter-zone latency data."""
     from az_scout_latency_stats.inter_zone import (
@@ -106,7 +176,7 @@ async def inter_zone_regions() -> dict[str, object]:
     return {"regions": get_inter_zone_regions()}
 
 
-@router.post("/inter-zone/matrix")
+@router.post("/inter-zone/matrix", response_model=InterZoneMatrixResponse)
 async def inter_zone_matrix(body: InterZoneMatrixRequest) -> dict[str, object]:
     """Return inter-zone AZ latency matrix (P50 RTT) for a selected region."""
     from az_scout_latency_stats.inter_zone import (
