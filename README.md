@@ -10,7 +10,7 @@ Inter-region and inter-zone (Availability Zone) latency plugin for [az-scout](ht
 - **Cloud63 dataset support** — optional inter-region crowd-sourced measurements via `mode="cloud63"`
 - **Inter-zone dataset support** — benchmark-based AZ latency matrix from Cloud63 benchmark API
 - **API endpoints** — inter-region and inter-zone endpoints for matrix and available regions
-- **MCP tools** — `inter_region_latency(...)` for inter-region RTT and `inter_zone_latency(...)` for inter-zone P50 RTT latency in µs
+- **MCP tools** — exposed on the az-scout MCP server and consumed equally by the **built-in AI Chat Panel** and **external AI agents** (e.g. Claude Desktop, VS Code Copilot). Available tools: `inter_region_latency(...)` for inter-region RTT and `inter_zone_latency(...)` for inter-zone P50 RTT latency in µs
 - **UI tab** — interactive D3.js views with inter-region/inter-zone scope switch, map/table synchronization, and bidirectional hover highlighting
 - **URL hash routing** — `#latency-stats` selects the plugin tab
 
@@ -96,7 +96,12 @@ curl -X POST http://localhost:8080/plugins/latency-stats/inter-zone/matrix \
   -d '{"region": "westeurope"}'
 ```
 
-### MCP tool
+### MCP tools
+
+Tools are registered on the az-scout MCP server and available to both consumers:
+
+- **AI Chat Panel** — the built-in chat assistant in the az-scout web UI
+- **External AI agents** — any MCP-compatible client (Claude Desktop, VS Code Copilot, etc.)
 
 ```
 inter_region_latency(source_region="francecentral", target_region="westeurope")

@@ -68,8 +68,11 @@ latency_stats = "az_scout_latency_stats:plugin"
 ## MCP tool patterns
 
 - MCP tools are plain Python functions with type annotations and a docstring.
-- The docstring becomes the tool description in the MCP server and AI chat.
-- Tools are automatically available in the AI chat assistant after plugin registration.
+- The docstring becomes the tool description in the MCP server.
+- Tools are consumed equally by two types of clients:
+  - **AI Chat Panel** — the built-in chat assistant in the az-scout web UI.
+  - **External AI agents** — any MCP-compatible client (Claude Desktop, VS Code Copilot, etc.).
+- Tools are automatically available after plugin registration.
 - Keep tool functions stateless — use parameters, not global state.
 
 ## Testing patterns
