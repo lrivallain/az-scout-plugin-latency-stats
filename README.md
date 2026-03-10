@@ -1,6 +1,6 @@
 # az-scout-plugin-latency-stats
 
-Inter-region and inter-zone (Availability Zone) latency plugin for [az-scout](https://github.com/lrivallain/az-scout).
+Inter-region and inter-zone (Availability Zone) latency plugin for [az-scout](https://github.com/az-scout/az-scout).
 
 <img width="1088" height="1361" alt="Screnshot of latency plugin" src="https://github.com/user-attachments/assets/53b51880-c2c4-4381-89eb-e5adda78de1a" />
 
@@ -24,7 +24,7 @@ az-scout  # plugin is auto-discovered
 For development:
 
 ```bash
-git clone https://github.com/lrivallain/az-scout-plugin-latency-stats
+git clone https://github.com/az-scout/az-scout-plugin-latency-stats
 cd az-scout-plugin-latency-stats
 uv sync --group dev
 uv pip install -e .

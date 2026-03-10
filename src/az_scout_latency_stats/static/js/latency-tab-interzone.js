@@ -114,32 +114,6 @@
         const colorScale = d3.scaleSequential(d3.interpolateRdYlGn).domain([maxRtt, minRtt]);
 
         const latencyGroup = svg.append("g").attr("class", "latency-interzone-links");
-
-        // Create a <defs> section for per-color arrow markers
-        const defs = svg.append("defs");
-        const markerCache = new Map();
-
-        function getArrowMarker(color, end) {
-            const key = `${color}-${end}`;
-            if (markerCache.has(key)) return `url(#${markerCache.get(key)})`;
-            const id = `arrow-${end}-${markerCache.size}`;
-            markerCache.set(key, id);
-            const marker = defs.append("marker")
-                .attr("id", id)
-                .attr("viewBox", "0 0 10 10")
-                .attr("markerWidth", 6)
-                .attr("markerHeight", 6)
-                .attr("orient", "auto");
-            if (end === "end") {
-                marker.attr("refX", 10).attr("refY", 5);
-                marker.append("path").attr("d", "M 0 0 L 10 5 L 0 10 z").attr("fill", color);
-            } else {
-                marker.attr("refX", 0).attr("refY", 5);
-                marker.append("path").attr("d", "M 10 0 L 0 5 L 10 10 z").attr("fill", color);
-            }
-            return `url(#${id})`;
-        }
-
         pairs.forEach(pair => {
             const src = zonePoints.get(pair.zoneA);
             const dst = zonePoints.get(pair.zoneB);
@@ -168,16 +142,13 @@
             const latencyUs = getLatencyUs(pair);
             if (latencyUs === null) return;
             const pairKey = [pair.zoneA, pair.zoneB].sort().join("|");
-            const linkColor = colorScale(latencyUs);
 
             const path = latencyGroup.append("path")
                 .attr("d", `M ${xA} ${yA} Q ${cx} ${cy}, ${xB} ${yB}`)
-                .attr("stroke", linkColor)
+                .attr("stroke", colorScale(latencyUs))
                 .attr("stroke-width", 3)
                 .attr("stroke-opacity", 0.9)
                 .attr("fill", "none")
-                .attr("marker-start", getArrowMarker(linkColor, "start"))
-                .attr("marker-end", getArrowMarker(linkColor, "end"))
                 .attr("data-pair-key", pairKey)
                 .attr("class", "latency-zone-map-latency-link");
 
