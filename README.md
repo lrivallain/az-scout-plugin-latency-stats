@@ -1,6 +1,6 @@
 # az-scout-plugin-latency-stats
 
-Inter-region and inter-zone (Availability Zone) latency plugin for [az-scout](https://github.com/az-scout/az-scout).
+[az-scout](https://az-scout.com) plugin for inter-region and inter-zone (Availability Zone) latency statistics.
 
 <img width="1088" height="1361" alt="Screnshot of latency plugin" src="https://github.com/user-attachments/assets/53b51880-c2c4-4381-89eb-e5adda78de1a" />
 
@@ -17,7 +17,7 @@ Inter-region and inter-zone (Availability Zone) latency plugin for [az-scout](ht
 ## Setup
 
 ```bash
-pip install az-scout-plugin-latency-stats
+uv pip install az-scout-plugin-latency-stats
 az-scout  # plugin is auto-discovered
 ```
 
@@ -106,13 +106,6 @@ inter_zone_latency(region="westeurope", source_zone="az1", target_zone="az2")
 
 ## Quality checks
 
-The scaffold includes GitHub Actions workflows in `.github/workflows/`:
-
-- **`ci.yml`** — Runs lint (ruff + mypy) and tests (pytest) on Python 3.11–3.13, triggered on push/PR to `main`.
-- **`publish.yml`** — Builds, creates a GitHub Release, and publishes to PyPI via trusted publishing (OIDC). Triggered on version tags (`v*`). Requires a `pypi` environment configured in your repo settings with OIDC trusted publishing.
-
-Run the same checks locally:
-
 ```bash
 uv run ruff check src/ tests/
 uv run ruff format --check src/ tests/
@@ -120,18 +113,10 @@ uv run mypy src/
 uv run pytest
 ```
 
-To publish a release:
-
-```bash
-git tag v2026.2.0
-git push origin v2026.2.0
-```
-
 ## Copilot support
 
 The `.github/copilot-instructions.md` file provides context to GitHub Copilot about
-the plugin structure, conventions, and az-scout plugin API. It helps Copilot generate
-code that follows the project patterns.
+the plugin structure, conventions, and az-scout plugin API.
 
 ## Data sources
 
@@ -147,4 +132,4 @@ Inter-zone outputs are exposed in **microseconds** (`latencyUsP50`). Always vali
 
 ## Disclaimer
 
-> **This tool is not affiliated with Microsoft.** All capacity, pricing, and latency information are indicative and not a guarantee of deployment success. Spot placement scores are probabilistic. Quota values and pricing are dynamic and may change between planning and actual deployment. Latency values are sourced from public benchmark/documentation endpoints and must be validated with in-tenant measurements.
+> **This tool is not affiliated with Microsoft.** All capacity, pricing, and availability information is indicative and not a guarantee of deployment success. Values are dynamic and may change between planning and actual deployment. Always validate in official Microsoft sources and in your target tenant/subscription.
