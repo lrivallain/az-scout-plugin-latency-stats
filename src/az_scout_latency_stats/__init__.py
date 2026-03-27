@@ -6,14 +6,17 @@ D3.js world map visualisation showing regions positioned geographically
 with great-circle latency arcs.
 """
 
+from __future__ import annotations
+
 from collections.abc import Callable
 from importlib.metadata import PackageNotFoundError
 from importlib.metadata import version as _pkg_version
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-from az_scout.plugin_api import ChatMode, TabDefinition
-from fastapi import APIRouter
+if TYPE_CHECKING:
+    from az_scout.plugin_api import ChatMode, TabDefinition
+    from fastapi import APIRouter
 
 _STATIC_DIR = Path(__file__).parent / "static"
 
@@ -58,6 +61,8 @@ class LatencyStatsPlugin:
 
     def get_tabs(self) -> list[TabDefinition] | None:
         """Return UI tab definitions."""
+        from az_scout.plugin_api import TabDefinition
+
         return [
             TabDefinition(
                 id="latency-stats",
