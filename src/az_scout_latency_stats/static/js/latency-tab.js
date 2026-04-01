@@ -91,7 +91,7 @@
         const interzoneTableEl  = document.getElementById("latency-interzone-table-container");
         const interzoneRegionEl = document.getElementById("latency-interzone-region-current");
         const interzoneStatusEl = document.getElementById("latency-interzone-status");
-        let _currentRegion = "";
+        const coreRegionSelect = document.getElementById("region-select");
         const scopeRadios = document.querySelectorAll('input[name="latency-scope"]');
         const selectedRegions = new Set(); // persists across filter rebuilds
 
@@ -132,7 +132,8 @@
         }));
 
         function getCoreSelectedRegion() {
-            return _currentRegion;
+            if (!coreRegionSelect) return "";
+            return (coreRegionSelect.value || "").toLowerCase().trim();
         }
 
         function switchScope() {
@@ -152,10 +153,19 @@
             fetchAndRender();
         }
 
-        document.addEventListener("azscout:context:change", (e) => {
-            _currentRegion = ((e.detail && e.detail.region) || "").toLowerCase().trim();
-            if (getScope() === "interzone") fetchAndRenderInterzone();
-        });
+        if (coreRegionSelect) {
+            coreRegionSelect.addEventListener("change", () => {
+                if (getScope() === "interzone") fetchAndRenderInterzone();
+            });
+            const regionObserver = new MutationObserver(() => {
+                if (getScope() === "interzone") fetchAndRenderInterzone();
+            });
+            regionObserver.observe(coreRegionSelect, {
+                childList: true,
+                subtree: true,
+                attributes: true,
+            });
+        }
 
         // Start with popover open (no regions selected yet)
         popover.classList.add("open");
@@ -331,6 +341,13 @@
         async function fetchAndRenderInterzone() {
             const region = getCoreSelectedRegion();
             interzoneRegionEl.textContent = region || "—";
+
+            if (!coreRegionSelect) {
+                interzoneStatusEl.textContent = "Main app region selector not found.";
+                interzoneGraphEl.innerHTML = '<p class="text-body-secondary text-center py-3">Region selector unavailable.</p>';
+                interzoneTableEl.innerHTML = "";
+                return;
+            }
 
             if (!region) {
                 interzoneStatusEl.textContent = "Select a region in the main app to view AZ latency.";
